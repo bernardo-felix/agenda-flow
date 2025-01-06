@@ -1,18 +1,30 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  OnModuleInit,
+} from '@nestjs/common';
 import { Inject } from '@nestjs/common';
+import { Logger } from 'nestjs-pino';
 import { Pool } from 'pg';
 
 @Injectable()
 export class PgService implements OnModuleInit {
-  constructor(@Inject('PG_POOL') private readonly pool: Pool) {}
+  constructor(
+    @Inject('PG_POOL') private readonly pool: Pool,
+    private readonly logger: Logger,
+  ) {}
 
   async onModuleInit() {
     try {
       const client = await this.pool.connect();
-      console.log('Conexão bem-sucedida ao banco de dados!');
+      this.logger.log('Conexão bem-sucedida ao banco de dados!');
       client.release();
     } catch (err) {
-      console.error('Erro ao conectar ao banco de dados:', err);
+      throw new HttpException(
+        'Erro fatal ao conectar ao banco de dados. O serviço não pode continuar.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 

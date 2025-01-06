@@ -3,7 +3,7 @@ import { Pool, PoolConfig } from 'pg';
 import { PgService } from './postgres.service';
 
 export interface PgModuleOptions extends PoolConfig {
-  isGlobal?: boolean;
+  global?: boolean;
 }
 
 @Module({
@@ -19,14 +19,14 @@ export class PgModule {
 
     return {
       module: PgModule,
-      global: options.isGlobal ?? false,
+      global: options.global ?? false,
       providers: [poolProvider, PgService],
       exports: [PgService],
     };
   }
 
   static registerAsync(options: {
-    isGlobal?: boolean;
+    global?: boolean;
     useFactory: (...args: any[]) => Promise<PgModuleOptions> | PgModuleOptions;
     inject?: any[];
   }): DynamicModule {
@@ -41,7 +41,7 @@ export class PgModule {
 
     return {
       module: PgModule,
-      global: options.isGlobal ?? false,
+      global: options.global ?? false,
       providers: [poolProvider, PgService],
       exports: [PgService],
     };
