@@ -5,7 +5,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LoggerModule } from 'nestjs-pino';
-import { APP_FILTER } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { AllExceptionsFilter } from './interceptors/exceptions_filter';
 import {
   AcceptLanguageResolver,
@@ -14,6 +14,9 @@ import {
   QueryResolver,
 } from 'nestjs-i18n';
 import path from 'path';
+import { JwtAuthGuard } from './auth/guard';
+import { JwtStrategy } from './auth/passport';
+import { RedisModule } from './db/redis/redis.module';
 
 @Module({
   imports: [
@@ -58,7 +61,16 @@ import path from 'path';
         new HeaderResolver(['x-lang']),
       ],
     }),
-
+    RedisModule.registerAsync({
+      global: true,
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        host: configService.get<string>('REDIS_HOST') || 'localhost',
+        port: configService.get<number>('REDIS_PORT') || 6379,
+        password: configService.get<string>('REDIS_PASSWORD') || 'password',
+        db: configService.get<number>('REDIS_DB') || 0,
+      }),
+    }),
     PgModule.registerAsync({
       global: true,
       inject: [ConfigService],
@@ -86,6 +98,8 @@ import path from 'path';
       provide: APP_FILTER,
       useClass: AllExceptionsFilter,
     },
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
+    JwtStrategy,
   ],
 })
 export class AppModule {}

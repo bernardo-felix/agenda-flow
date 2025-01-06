@@ -3,6 +3,6 @@ export interface People {
   name: string;
   email: string;
   password: string;
-  createdAt: Date;
-  updatedAt: Date;
+  created_at: Date;
+  updated_at: Date;
 }

@@ -6,6 +6,6 @@ export interface Appointments {
   scheduledAt: Date;
   status: AppointmentStatus;
   emails: string[];
-  createdAt: Date;
-  updatedAt: Date;
+  created_at: Date;
+  updated_at: Date;
 }

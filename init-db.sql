@@ -5,11 +5,11 @@ CREATE TABLE people (
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TYPE group_type AS ENUM (
+CREATE TYPE group_type_enum AS ENUM (
     'admin',
     'user',
     'manager'
@@ -17,14 +17,14 @@ CREATE TYPE group_type AS ENUM (
 
 CREATE TABLE accesses (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    personId UUID REFERENCES people(id) ON DELETE RESTRICT,
-    groupType group_type NOT NULL,
-    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE(personId, groupType)
+    person_id UUID REFERENCES people(id) ON DELETE RESTRICT,
+    group_type group_type_enum NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(person_id, group_type)
 );
 
-CREATE TYPE appointment_status AS ENUM (
+CREATE TYPE appointment_status_enum AS ENUM (
     'scheduled',
     'cancelled',
     'sent'
@@ -32,30 +32,30 @@ CREATE TYPE appointment_status AS ENUM (
 
 CREATE TABLE appointments (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    personId UUID REFERENCES people(id) ON DELETE CASCADE,
-    scheduledAt TIMESTAMP NOT NULL,
-    status appointment_status DEFAULT 'scheduled',
+    person_id UUID REFERENCES people(id) ON DELETE CASCADE,
+    scheduled_at TIMESTAMP NOT NULL,
+    status appointment_status_enum DEFAULT 'scheduled',
     emails TEXT[] NOT NULL,
-    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE appointments_info (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    appointmentId UUID REFERENCES appointments(id) ON DELETE CASCADE,
-    emailTitle VARCHAR(255) NOT NULL,
-    emailBody TEXT NOT NULL,
+    appointment_id UUID REFERENCES appointments(id) ON DELETE CASCADE,
+    subject VARCHAR(255) NOT NULL,
+    body TEXT NOT NULL,
     emails TEXT[] NOT NULL,
-    rabbitQueueId VARCHAR(255) NOT NULL,
-    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 WITH new_user AS (
     INSERT INTO people (name, email, password)
     VALUES 
-    ('JOÂO NINGUEM', 'BEFELIX07@GMAIL.COM', '$2b$12$2ufZiuGdmSiS/LqVmKy6NOOh/2rbc2I4vdUzsQ8/s1l0DXOj7I6Ym')
+    ('JOÂO NINGUEM', 'BEFELIX07@GMAIL.COM', '$argon2id$v=19$m=65536,t=3,p=4$O1836cmx9qWwQqjQMCpbNA$YOqfgB7WDfrFfGLqZTUd1F/XofW2MQwEH6QrFk1W12g
+')
     RETURNING id
 )
-INSERT INTO accesses (personId, groupType)
+INSERT INTO accesses (person_id, group_type)
 SELECT id, 'admin' FROM new_user;

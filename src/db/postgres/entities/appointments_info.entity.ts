@@ -1,10 +1,9 @@
 export interface AppointmentsInfo {
   id: string;
-  appointmentId: string;
-  emailTitle: string;
-  emailBody: string;
+  appointment_id: string;
+  subject: string;
+  body: string;
   emails: string[];
-  rabbitQueueId: string;
-  createdAt: Date;
-  updatedAt: Date;
+  created_at: Date;
+  updated_at: Date;
 }

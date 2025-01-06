@@ -2,8 +2,8 @@ import { GroupType } from './group_type.enum';
 
 export interface Accesses {
   id: string;
-  personId: string;
-  groupType: GroupType;
-  createdAt: Date;
-  updatedAt: Date;
+  person_id: string;
+  group_type: GroupType;
+  created_at: Date;
+  updated_at: Date;
 }
