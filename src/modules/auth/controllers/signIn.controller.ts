@@ -10,8 +10,7 @@ export class SignInController {
   constructor(private readonly signInService: SignInService) {}
 
   /**
-   * Create a new cat
-   * @remarks This operation allows you to create a new cat.
+   * @remarks Return a token for auth.
    */
   @HttpCode(200)
   @Post()

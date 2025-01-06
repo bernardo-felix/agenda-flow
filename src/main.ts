@@ -40,10 +40,13 @@ async function bootstrap() {
   app.useGlobalInterceptors(new LoggerErrorInterceptor());
 
   const config = new DocumentBuilder()
-    .setTitle('Cats example')
-    .setDescription('The cats API description')
+    .setTitle('Agenda FLOW')
+    .setDescription('apis for agenda FLOW')
     .setVersion('1.0')
-    .addTag('cats')
+    // .addBearerAuth(
+    //   { type: 'http', scheme: 'bearer', bearerFormat: 'JWT', in: 'header' },
+    //   'Authorization',
+    // )adicionar quando houver rotas com auth
     .build();
 
   await SwaggerModule.loadPluginMetadata(metadata);
