@@ -2,8 +2,8 @@ import { AppointmentStatus } from './appointment_status.enum';
 
 export interface Appointments {
   id: string;
-  personId: string;
-  scheduledAt: Date;
+  person_id: string;
+  scheduled_at: Date;
   status: AppointmentStatus;
   emails: string[];
   created_at: Date;

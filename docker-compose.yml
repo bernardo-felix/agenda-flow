@@ -14,15 +14,31 @@ services:
 
   cache:
     image: redis:6.2-alpine
-    restart: always
     ports:
       - '6379:6379'
     command: redis-server --save 20 1 --loglevel warning --requirepass password
     volumes: 
       - cache:/data
 
+  rabbitmq:
+    build:
+      context: .
+      dockerfile: ./docker/rabbit/Dockerfile
+    container_name: rabbitmq
+    ports:
+      - "5672:5672" 
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+
 volumes:
   postgres_data:
 
   cache:
     driver: local
+
+  rabbitmq_data:

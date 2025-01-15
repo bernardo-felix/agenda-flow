@@ -13,6 +13,7 @@ export const IS_PUBLIC_KEY = 'isPublic';
 export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
 
 export const ROLES_KEY = 'roles';
+
 export const Roles = (...roles: GroupType[]) => SetMetadata(ROLES_KEY, roles);
 
 @Injectable()
@@ -44,7 +45,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') implements CanActivate {
     if (!requiredRoles || requiredRoles.length == 0) {
       return true;
     }
-    console.log(requiredRoles);
+
     const hasRole = requiredRoles.some((role) => user.groups.includes(role));
     if (!hasRole) throw new UnauthorizedException();
 

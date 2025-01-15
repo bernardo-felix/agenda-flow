@@ -26,6 +26,7 @@ CREATE TABLE accesses (
 
 CREATE TYPE appointment_status_enum AS ENUM (
     'scheduled',
+    'Processing',
     'cancelled',
     'sent'
 );
@@ -35,7 +36,6 @@ CREATE TABLE appointments (
     person_id UUID REFERENCES people(id) ON DELETE CASCADE,
     scheduled_at TIMESTAMP NOT NULL,
     status appointment_status_enum DEFAULT 'scheduled',
-    emails TEXT[] NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -53,8 +53,7 @@ CREATE TABLE appointments_info (
 WITH new_user AS (
     INSERT INTO people (name, email, password)
     VALUES 
-    ('JOÂO NINGUEM', 'BEFELIX07@GMAIL.COM', '$argon2id$v=19$m=65536,t=3,p=4$O1836cmx9qWwQqjQMCpbNA$YOqfgB7WDfrFfGLqZTUd1F/XofW2MQwEH6QrFk1W12g
-')
+    ('JOÂO NINGUEM', 'BEFELIX07@GMAIL.COM', '$argon2id$v=19$m=65536,t=3,p=4$O1836cmx9qWwQqjQMCpbNA$YOqfgB7WDfrFfGLqZTUd1F/XofW2MQwEH6QrFk1W12g')
     RETURNING id
 )
 INSERT INTO accesses (person_id, group_type)

@@ -5,19 +5,34 @@ import { SignInDto } from '../dto/signIn.dto';
 import { People } from 'src/db/postgres/entities/people.entity';
 import { TokenService } from './token.service';
 import { I18nContext } from 'nestjs-i18n';
+import { RedisService } from 'src/db/redis/redis.service';
+import keys from 'src/db/redis/keys';
 
 @Injectable()
 export class SignInService {
   constructor(
     private readonly pg: PgService,
     private readonly tokenService: TokenService,
+    private readonly redisService: RedisService,
   ) {}
 
   async signIn(i18n: I18nContext, { email, password }: SignInDto) {
-    const verifyEmail: People[] = await this.pg.execute(
-      'SELECT * FROM people WHERE email = $1',
-      [email.toUpperCase()],
+    let verifyEmail: People[] = await this.redisService.getKey(
+      [...keys.PERSON.INFO, email].join(';'),
     );
+
+    if (!verifyEmail) {
+      verifyEmail = await this.pg.execute(
+        'SELECT * FROM people WHERE email = $1',
+        [email.toUpperCase()],
+      );
+
+      await this.redisService.setKey(
+        [...keys.PERSON.INFO, email].join(';'),
+        JSON.stringify(verifyEmail),
+        60 * 60 * 12,
+      );
+    }
 
     if (verifyEmail.length == 0)
       throw new HttpException(

@@ -17,12 +17,15 @@ import path from 'path';
 import { JwtAuthGuard } from './auth/guard';
 import { JwtStrategy } from './auth/passport';
 import { RedisModule } from './db/redis/redis.module';
+import { AppointmentModule } from './modules/appointments/appointments.module';
+import { RabbitModule } from './db/rabbit/rabbit.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+
     LoggerModule.forRoot({
       pinoHttp: {
         redact: ['req.headers.authorization'],
@@ -49,6 +52,7 @@ import { RedisModule } from './db/redis/redis.module';
         },
       },
     }),
+
     I18nModule.forRoot({
       fallbackLanguage: 'en',
       loaderOptions: {
@@ -61,6 +65,7 @@ import { RedisModule } from './db/redis/redis.module';
         new HeaderResolver(['x-lang']),
       ],
     }),
+
     RedisModule.registerAsync({
       global: true,
       inject: [ConfigService],
@@ -69,8 +74,10 @@ import { RedisModule } from './db/redis/redis.module';
         port: configService.get<number>('REDIS_PORT') || 6379,
         password: configService.get<string>('REDIS_PASSWORD') || 'password',
         db: configService.get<number>('REDIS_DB') || 0,
+        retryStrategy: null,
       }),
     }),
+
     PgModule.registerAsync({
       global: true,
       inject: [ConfigService],
@@ -82,6 +89,7 @@ import { RedisModule } from './db/redis/redis.module';
         database: configService.get<string>('DB_DATABASE') || 'db',
       }),
     }),
+
     JwtModule.registerAsync({
       global: true,
       inject: [ConfigService],
@@ -90,7 +98,17 @@ import { RedisModule } from './db/redis/redis.module';
         signOptions: { expiresIn: '1h' },
       }),
     }),
+
+    RabbitModule.registerAsync({
+      global: true,
+      inject: [ConfigService],
+      useFactory: async () => ({
+        uri: 'amqp://admin:admin@localhost:5672/',
+      }),
+    }),
+
     PeopleModule,
+    AppointmentModule,
     AuthModule,
   ],
   providers: [

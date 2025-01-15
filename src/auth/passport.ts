@@ -5,6 +5,7 @@ import { ExtractJwt } from 'passport-jwt';
 import { Accesses } from 'src/db/postgres/entities/accesses.entity';
 import { PgService } from 'src/db/postgres/postgres.service';
 import { RedisService } from 'src/db/redis/redis.service';
+import keys from '../db/redis/keys';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -19,21 +20,27 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: { id: string }) {
-    const cache = await this.redisService.getKey(payload.id);
-    console.log(cache);
+  async validate({ id }: { id: string }) {
+    const cache = await this.redisService.getKey(
+      [...keys.ACCESS, id].join(':'),
+    );
+
     if (!cache) {
       const resp: Accesses[] = await this.pg.execute(
         'SELECT * FROM accesses WHERE person_id = $1',
-        [payload.id],
+        [id],
       );
 
       const infos = {
-        id: payload.id,
+        id: id,
         groups: resp.map((e) => e.group_type),
       };
-      await this.redisService.setKey(payload.id, JSON.stringify(infos));
-      console.log(infos);
+
+      await this.redisService.setKey(
+        [...keys.ACCESS, id].join(':'),
+        JSON.stringify(infos),
+      );
+
       return infos;
     }
 

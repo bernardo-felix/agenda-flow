@@ -1,8 +1,9 @@
 import { Module, DynamicModule } from '@nestjs/common';
-import * as ioredis from 'ioredis';
+import { Redis, RedisOptions } from 'ioredis';
 import { RedisService } from './redis.service';
+import { WebsocketService } from './websocket.service';
 
-export interface RedisModuleOptions extends ioredis.RedisOptions {
+export interface RedisModuleOptions extends RedisOptions {
   global?: boolean;
 }
 
@@ -14,14 +15,20 @@ export class RedisModule {
   static register(options: RedisModuleOptions): DynamicModule {
     const redisProvider = {
       provide: 'REDIS_CLIENT',
-      useFactory: () => new ioredis.Redis(options),
+      useFactory: () => {
+        try {
+          return new Redis(options);
+        } catch {
+          return null;
+        }
+      },
     };
 
     return {
       module: RedisModule,
       global: options.global ?? false,
-      providers: [redisProvider, RedisService],
-      exports: [RedisService],
+      providers: [redisProvider, RedisService, WebsocketService],
+      exports: [RedisService, WebsocketService],
     };
   }
 
@@ -36,7 +43,11 @@ export class RedisModule {
       provide: 'REDIS_CLIENT',
       useFactory: async (...args: any[]) => {
         const redisConfig = await options.useFactory(...args);
-        return new ioredis.Redis(redisConfig);
+        try {
+          return new Redis(redisConfig);
+        } catch {
+          return null;
+        }
       },
       inject: options.inject || [],
     };
@@ -44,8 +55,8 @@ export class RedisModule {
     return {
       module: RedisModule,
       global: options.global ?? false,
-      providers: [redisProvider, RedisService],
-      exports: [RedisService],
+      providers: [redisProvider, RedisService, WebsocketService],
+      exports: [RedisService, WebsocketService],
     };
   }
 }

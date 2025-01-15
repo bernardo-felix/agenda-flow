@@ -12,12 +12,15 @@ import { Http2ServerRequest } from 'http2';
 import metadata from './metadata';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { I18nValidationExceptionFilter, I18nValidationPipe } from 'nestjs-i18n';
+import { Settings } from 'luxon';
 
 export function genReqId(req: IncomingMessage | Http2ServerRequest): string {
   return req['id'] || randomUUID();
 }
 
 async function bootstrap() {
+  Settings.defaultLocale = 'UTC';
+
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter({
