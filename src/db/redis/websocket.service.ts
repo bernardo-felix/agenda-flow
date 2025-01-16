@@ -27,10 +27,10 @@ export class WebsocketService
 
   async afterInit() {
     const redisClient = new Redis({
-      host: this.configService.get<string>('REDIS_HOST') || 'localhost',
-      port: this.configService.get<number>('REDIS_PORT') || 6379,
-      password: this.configService.get<string>('REDIS_PASSWORD') || 'password',
-      db: this.configService.get<number>('REDIS_DB') || 1,
+      host: this.configService.get<string>('REDIS_HOST'),
+      port: this.configService.get<number>('REDIS_PORT'),
+      password: this.configService.get<string>('REDIS_PASSWORD'),
+      db: this.configService.get<number>('REDIS_DB_WEBSOCKET'),
       retryStrategy: null,
     });
 
@@ -56,7 +56,9 @@ export class WebsocketService
     this.logger.log(`User disconnected: ${client.id}`);
   }
 
-  sendNotification(event: string, message: string | object) {
-    this.server.emit(event, { message });
+  sendNotification(events: string[], message: string | object) {
+    for (const event of events) {
+      this.server.emit(event, { message });
+    }
   }
 }

@@ -1,74 +1,98 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Serviço de Agendamento
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Este é um serviço de agendamento que inclui funcionalidades como controle de usuários, gestão de acessos, agendamento e cancelamento de compromissos. Além disso, o serviço envia notificações por email e por WebSocket.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Tecnologias Utilizadas
 
-## Description
+- **Redis**: Utilizado para cache e suporte a WebSocket.
+- **RabbitMQ**: Gerencia filas de agendamentos para garantir o processamento assíncrono e eficiente dos mesmos.
+- **PostgreSQL**: Banco de dados relacional para armazenamento das informações do sistema.
+- **NestJS**: Framework utilizado para desenvolver o backend do serviço.
+- **Swagger**: Documentação interativa disponível em `http://localhost:<porta>/docs`.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Funcionalidades
 
-## Installation
+- **Controle de Usuários e Acessos**: Permite gerenciar usuários e suas permissões.
+- **Agendamentos**: Possibilidade de criar e cancelar agendamentos.
+- **Notificações**:
+  - Envio de email quando o horário do agendamento é alcançado.
+  - Disparo de notificações em tempo real via WebSocket.
 
-```bash
-$ pnpm install
+## Documentação da API
+
+A documentação da API está disponível em:
+
+```
+http://localhost:<porta>/docs
 ```
 
-## Running the app
+Substitua `<porta>` pela porta configurada no seu ambiente.
 
-```bash
-# development
-$ pnpm run start
+---
 
-# watch mode
-$ pnpm run start:dev
+## Como Executar o Projeto
 
-# production mode
-$ pnpm run start:prod
+### Pré-requisitos
+
+- **Docker**: Necessário para executar os serviços.
+  - Instale o Docker seguindo as instruções em: [https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/)
+- **Node.js com NVM**: Utilize o Node Version Manager (NVM) para gerenciar a versão do Node.js.
+  - Instale o NVM seguindo as instruções em: [https://github.com/nvm-sh/nvm](https://github.com/nvm-sh/nvm)
+  - Após instalar o NVM, instale o Node.js:
+    ```bash
+    nvm install --lts
+    nvm use --lts
+    ```
+- **PNPM**: Gerenciador de pacotes recomendado para este projeto.
+  - Instale o PNPM globalmente:
+    ```bash
+    npm install -g pnpm
+    ```
+
+### Passo a Passo
+
+1. Copie o arquivo `.env.example` para `.env`:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Configure o OAuth2 do Google
+
+Para que o envio de emails funcione corretamente, é necessário configurar o OAuth2 do Google. Siga este tutorial para obter as credenciais necessárias: [Sending Emails Securely Using Node.js, Nodemailer, SMTP, Gmail, and OAuth2](https://dev.to/chandrapantachhetri/sending-emails-securely-using-node-js-nodemailer-smtp-gmail-and-oauth2-g3a).
+
+Preencha as seguintes variáveis no arquivo `.env`:
+
+```env
+EMAIL=
+REFRESH_TOKEN=
+CLIENT_SECRET=
+CLIENT_ID=
 ```
 
-## Test
+Essas informações serão utilizadas para autenticar o envio de emails.
 
-```bash
-# unit tests
-$ pnpm run test
+3. Inicie os serviços utilizando o Docker Compose:
 
-# e2e tests
-$ pnpm run test:e2e
+   ```bash
+   docker-compose up -d
+   ```
 
-# test coverage
-$ pnpm run test:cov
-```
+4. Instale as dependências do projeto:
 
-## Support
+   ```bash
+   pnpm install
+   ```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+5. Execute a aplicação:
+   ```bash
+   pnpm run start
+   ```
 
-## Stay in touch
+---
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Contato
 
-## License
+Caso encontre algum problema ou tenha dúvidas, entre em contato com a equipe de desenvolvimento.
 
-Nest is [MIT licensed](LICENSE).
-# agenda-flow
+Agradecemos por usar nosso serviço de agendamento! 🚀

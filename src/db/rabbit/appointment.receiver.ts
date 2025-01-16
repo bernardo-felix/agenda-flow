@@ -54,7 +54,7 @@ export class AppointmentReceiver implements OnModuleInit {
 
     if (infos[0].status == AppointmentStatus.Sent) return;
     if (infos[0].status == AppointmentStatus.Cancelled) {
-      this.websocket.sendNotification('notification', {
+      this.websocket.sendNotification(infos[0].emails, {
         cancel: true,
         subjects: infos[0].subject,
         body: infos[0].body,
@@ -64,7 +64,7 @@ export class AppointmentReceiver implements OnModuleInit {
 
     await this.sendEmail(infos[0]);
 
-    this.websocket.sendNotification('notification', {
+    this.websocket.sendNotification(infos[0].emails, {
       subjects: infos[0].subject,
       body: infos[0].body,
     });

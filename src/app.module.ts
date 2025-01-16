@@ -70,10 +70,10 @@ import { RabbitModule } from './db/rabbit/rabbit.module';
       global: true,
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        host: configService.get<string>('REDIS_HOST') || 'localhost',
-        port: configService.get<number>('REDIS_PORT') || 6379,
-        password: configService.get<string>('REDIS_PASSWORD') || 'password',
-        db: configService.get<number>('REDIS_DB') || 0,
+        host: configService.get<string>('REDIS_HOST'),
+        port: configService.get<number>('REDIS_PORT'),
+        password: configService.get<string>('REDIS_PASSWORD'),
+        db: configService.get<number>('REDIS_DB'),
         retryStrategy: null,
       }),
     }),
@@ -82,11 +82,11 @@ import { RabbitModule } from './db/rabbit/rabbit.module';
       global: true,
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        host: configService.get<string>('DB_HOST') || 'localhost',
-        port: configService.get<number>('DB_PORT') || 5432,
-        user: configService.get<string>('DB_USER') || 'pg',
-        password: configService.get<string>('DB_PASSWORD') || 'pg',
-        database: configService.get<string>('DB_DATABASE') || 'db',
+        host: configService.get<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        user: configService.get<string>('DB_USER'),
+        password: configService.get<string>('DB_PASSWORD'),
+        database: configService.get<string>('DB_DATABASE'),
       }),
     }),
 
@@ -94,7 +94,7 @@ import { RabbitModule } from './db/rabbit/rabbit.module';
       global: true,
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('TOKEN_SECRET') || 'signIn',
+        secret: configService.get<string>('TOKEN_SECRET'),
         signOptions: { expiresIn: '1h' },
       }),
     }),
@@ -102,8 +102,8 @@ import { RabbitModule } from './db/rabbit/rabbit.module';
     RabbitModule.registerAsync({
       global: true,
       inject: [ConfigService],
-      useFactory: async () => ({
-        uri: 'amqp://admin:admin@localhost:5672/',
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get<string>('RABBIT_URI'),
       }),
     }),
 

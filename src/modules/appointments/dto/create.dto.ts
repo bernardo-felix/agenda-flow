@@ -1,4 +1,4 @@
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
   ArrayNotEmpty,
   IsArray,
@@ -14,6 +14,7 @@ class Infos {
   @IsArray()
   @ArrayNotEmpty()
   @IsEmail({}, { each: true })
+  @Transform(({ value }) => value.map((email: string) => email.toUpperCase()))
   emails: string[];
 
   @IsString()
