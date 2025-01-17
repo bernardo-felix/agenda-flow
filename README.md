@@ -1,6 +1,6 @@
 # Serviço de Agendamento
 
-Este é um serviço de agendamento que inclui funcionalidades como controle de usuários, gestão de acessos, agendamento e cancelamento de compromissos. Além disso, o serviço envia notificações por email e por WebSocket.
+Este é um serviço de agendamento que inclui funcionalidades como controle de usuários, gestão de acessos, agendamento e cancelamento de compromissos. Além disso, o serviço envia notificações por E-mail e por WebSocket.
 
 ## Tecnologias Utilizadas
 
@@ -13,7 +13,7 @@ Este é um serviço de agendamento que inclui funcionalidades como controle de u
 ## Funcionalidades
 
 - **Controle de Usuários e Acessos**: Permite gerenciar usuários e suas permissões.
-- **Agendamentos**: Possibilidade de criar e cancelar agendamentos.
+- **Agendamentos**: Possibilita criar e cancelar agendamentos.
 - **Notificações**:
   - Envio de email quando o horário do agendamento é alcançado.
   - Disparo de notificações em tempo real via WebSocket.
@@ -93,6 +93,4 @@ Essas informações serão utilizadas para autenticar o envio de emails.
 
 ## Contato
 
-Caso encontre algum problema ou tenha dúvidas, entre em contato com a equipe de desenvolvimento.
-
-Agradecemos por usar nosso serviço de agendamento! 🚀
+Caso encontre algum problema ou tenha dúvidas, entre em contato com bernardo.felix.job@gmail.com. 🚀
