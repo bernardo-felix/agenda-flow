@@ -92,8 +92,15 @@ Essas informações serão utilizadas para autenticar o envio de emails.
    ```
 
 5. Execute a aplicação:
+
    ```bash
    pnpm run start
+   ```
+
+6. Execute os testes:
+
+   ```bash
+   pnpm run test
    ```
 
 ---
