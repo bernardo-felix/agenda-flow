@@ -1,12 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PgService } from 'src/db/postgres/postgres.service';
+import { PgService } from '@/db/postgres/postgres.service';
 import * as argon2 from 'argon2';
 import { SignInDto } from '../dto/signIn.dto';
-import { People } from 'src/db/postgres/entities/people.entity';
+import { People } from '@/db/postgres/entities/people.entity';
 import { TokenService } from './token.service';
 import { I18nContext } from 'nestjs-i18n';
-import { RedisService } from 'src/db/redis/redis.service';
-import keys from 'src/db/redis/keys';
+import { RedisService } from '@/db/redis/redis.service';
+import keys from '@/db/redis/keys';
 
 @Injectable()
 export class SignInService {

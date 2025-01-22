@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { PgService } from 'src/db/postgres/postgres.service';
-import { RedisService } from 'src/db/redis/redis.service';
-import keys from 'src/db/redis/keys';
-import { People } from 'src/db/postgres/entities/people.entity';
+import { PgService } from '@/db/postgres/postgres.service';
+import { RedisService } from '@/db/redis/redis.service';
+import keys from '@/db/redis/keys';
+import { People } from '@/db/postgres/entities/people.entity';
 
 @Injectable()
 export class ListService {

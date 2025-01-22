@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PgService } from 'src/db/postgres/postgres.service';
-import { AppointmentStatus } from 'src/db/postgres/entities/appointment_status.enum';
-import { Appointments } from 'src/db/postgres/entities/appointments.entity';
+import { PgService } from '@/db/postgres/postgres.service';
+import { AppointmentStatus } from '@/db/postgres/entities/appointment_status.enum';
+import { Appointments } from '@/db/postgres/entities/appointments.entity';
 import { DateTime } from 'luxon';
 
 @Injectable()

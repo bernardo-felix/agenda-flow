@@ -1,6 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ListService } from '../services/list.service';
-import { User } from 'src/decorators/user.decorator';
+import { User } from '@/decorators/user.decorator';
 
 @Controller('list')
 export class ListController {

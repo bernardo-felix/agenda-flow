@@ -4,7 +4,7 @@ import { SignInService } from '../services/signIn.service';
 import { ApiResponse } from '@nestjs/swagger';
 import { SignInResponse } from '../dto/response/signIn.dto';
 import { I18n, I18nContext } from 'nestjs-i18n';
-import { Public } from 'src/auth/guard';
+import { Public } from '@/auth/guard';
 
 @Controller('signIn')
 export class SignInController {

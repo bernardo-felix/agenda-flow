@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-jwt';
 import { ExtractJwt } from 'passport-jwt';
-import { Accesses } from 'src/db/postgres/entities/accesses.entity';
-import { PgService } from 'src/db/postgres/postgres.service';
-import { RedisService } from 'src/db/redis/redis.service';
+import { Accesses } from '@/db/postgres/entities/accesses.entity';
+import { PgService } from '@/db/postgres/postgres.service';
+import { RedisService } from '@/db/redis/redis.service';
 import keys from '../db/redis/keys';
 
 @Injectable()

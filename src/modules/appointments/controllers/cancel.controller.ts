@@ -1,5 +1,5 @@
 import { Controller, Param, Post } from '@nestjs/common';
-import { User } from 'src/decorators/user.decorator';
+import { User } from '@/decorators/user.decorator';
 import { CancelService } from '../services/cancel.service';
 
 @Controller('cancel')

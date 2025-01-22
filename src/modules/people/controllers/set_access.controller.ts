@@ -1,6 +1,6 @@
 import { Controller, Param, Post } from '@nestjs/common';
-import { Roles } from 'src/auth/guard';
-import { GroupType } from 'src/db/postgres/entities/group_type.enum';
+import { Roles } from '@/auth/guard';
+import { GroupType } from '@/db/postgres/entities/group_type.enum';
 import { SetAccessService } from '../services/set_access.service';
 @Controller()
 export class SetAcccessController {

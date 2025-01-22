@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PgService } from 'src/db/postgres/postgres.service';
+import { PgService } from '@/db/postgres/postgres.service';
 import { RegisterDto } from '../dto/register.dto';
 import * as argon2 from 'argon2';
-import { People } from 'src/db/postgres/entities/people.entity';
+import { People } from '@/db/postgres/entities/people.entity';
 
 @Injectable()
 export class RegisterService {

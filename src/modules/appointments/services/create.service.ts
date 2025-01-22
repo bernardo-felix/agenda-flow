@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { PgService } from 'src/db/postgres/postgres.service';
+import { PgService } from '@/db/postgres/postgres.service';
 import { CreateDto } from '../dto/create.dto';
-import { AppointmentStatus } from 'src/db/postgres/entities/appointment_status.enum';
-import { APPOINTMENT_QUEUE, RabbitService } from 'src/db/rabbit/rabbit.service';
+import { AppointmentStatus } from '@/db/postgres/entities/appointment_status.enum';
+import { APPOINTMENT_QUEUE, RabbitService } from '@/db/rabbit/rabbit.service';
 import { DateTime } from 'luxon';
 
 @Injectable()

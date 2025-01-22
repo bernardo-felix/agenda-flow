@@ -28,6 +28,13 @@ http://localhost:<porta>/docs
 
 Substitua `<porta>` pela porta configurada no seu ambiente.
 
+## Credenciais do Usuário Admin
+
+Para acessar o sistema como administrador, utilize as seguintes credenciais padrão:
+
+- **E-mail**: teste@gmail.com
+- **Senha**: 123
+
 ---
 
 ## Como Executar o Projeto

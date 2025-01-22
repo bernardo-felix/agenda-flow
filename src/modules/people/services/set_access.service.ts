@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { PgService } from 'src/db/postgres/postgres.service';
-import { Accesses } from 'src/db/postgres/entities/accesses.entity';
-import { RedisService } from 'src/db/redis/redis.service';
-import keys from 'src/db/redis/keys';
+import { PgService } from '@/db/postgres/postgres.service';
+import { Accesses } from '@/db/postgres/entities/accesses.entity';
+import { RedisService } from '@/db/redis/redis.service';
+import keys from '@/db/redis/keys';
 
 @Injectable()
 export class SetAccessService {
@@ -17,7 +17,7 @@ export class SetAccessService {
       [personId, access],
     );
 
-    listAccess.length > 0
+    listAccess.length == 0
       ? await this.createAccess(personId, access)
       : await this.deleteAccess(personId, access);
 
